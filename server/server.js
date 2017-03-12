@@ -18,29 +18,30 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {// listen for a new connection
 	console.log('New user connected');
 
-	// socket.emit('newEmail', { // send custom event to client
-	// 	from: 'mike@example.com',
-	// 	text: 'Hey What is going on.',
-	// 	createdAt: 123
-	// });
-	// socket.emit('newMessage', { // send custom event to client
-	// 	from: 'John',
-	// 	text: 'See you then.',
-	// 	createdAt: 123123
-	// });
+	// socket.emit frm Admin text Welcome to the chat app
+	socket.emit('newMessage', {
+		from: 'Admin',
+		text: 'Welcome to the chat app',
+		createdAt: new Date().getTime()
+	});
+
+	// socket.broadcast.emit frm Admin text New user joined
+	socket.broadcast.emit('newMessage', {
+		from: 'Admin',
+		text: 'New user joined',
+		createdAt: new Date().getTime()
+	})
 
 
-
-	// socket.on('createEmail', (newEmail) => {
-	// 	console.log('createEmail', newEmail);
-	// });
 	socket.on('createMessage', (message) => {
 		console.log('newMessage', message);
+
 		io.emit('newMessage', {
 			from: message.from,
 			text: message.text,
 			createdAt: new Date().getTime()
-		})
+		});
+
 	});
 
 	socket.on('disconnect', () => {
@@ -70,5 +71,5 @@ server.listen(port, () => {
  * new way to set path - path.join(__dirname, '../public')
  * socket has both front and backend library
  * io.on() - let u register an event listner. we can listen for a specific event and do something when that event happens
- * broadcast event - 
+ * broadcast - emitting an event to everybody, but one specific user
  */
