@@ -30,7 +30,7 @@ io.on('connection', (socket) => {// listen for a new connection
 		console.log('createMessage', message);
 
 		io.emit('newMessage', generateMessage(message.from, message.text));
-		callback('This is from the server.'); // callback frn in client		
+		callback(); // callback frn in client		
 	});
 
 	socket.on('createLocationMessage', (coords) => {
